@@ -106,16 +106,13 @@ Rp1)、Rp2) と項目を付け、1薬剤ごとにリスト形式で記載。
 
 ---
 
-## 【ステップ3：ファイルへの書き出し】
-文書が完成したら、以下の手順でファイルに保存してください。
+## 【ステップ3：Google Drive への保存】
+文書が完成したら、Google Drive MCP ツール（mcp__Google_Drive__create_file）を使って自動的に保存してください。
 
-1. ユーザーに「テキスト(.txt)とWord(.docx)のどちらで保存しますか？」と確認する
-2. **テキスト(.txt)の場合**：
-   - ファイル名：`referral_YYYYMMDD_患者ID.txt`（例：referral_20260629_141877.txt）
-   - カレントディレクトリに保存し、保存先のフルパスを表示する
-3. **Wordの場合**：
-   - `python3 -c "import docx"` で python-docx の有無を確認する
-   - インストール済みなら .docx 形式で保存する
-   - 未インストールなら `pip install python-docx` を実行してからWordファイルを生成する
-   - ファイル名：`referral_YYYYMMDD_患者ID.docx`
-4. 保存完了後、ファイルのフルパスをユーザーに伝える
+1. **ファイル名**：`referral_YYYYMMDD_患者ID`（例：referral_20260629_142072）
+2. **保存方法**：
+   - `textContent` に文書全文を設定する
+   - `contentMimeType` は `text/plain` を指定する（Google ドキュメントに自動変換される）
+   - `title` にファイル名を設定する
+3. 保存完了後、ユーザーにファイル名とGoogle Drive上のURLを伝える
+4. ユーザーの確認なしに自動保存してよい（デフォルト動作）
