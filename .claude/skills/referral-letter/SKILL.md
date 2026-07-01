@@ -106,13 +106,32 @@ Rp1)、Rp2) と項目を付け、1薬剤ごとにリスト形式で記載。
 
 ---
 
-## 【ステップ3：Google Drive への保存】
-文書が完成したら、Google Drive MCP ツール（mcp__Google_Drive__create_file）を使って自動的に保存してください。
+## 【ステップ3：ファイル保存と送信】
+文書が完成したら、以下の順序で保存・送信してください。ユーザーの確認なしに自動実行してよい。
 
-1. **ファイル名**：`referral_YYYYMMDD_患者ID`（例：referral_20260629_142072）
-2. **保存方法**：
-   - `textContent` に文書全文を設定する
-   - `contentMimeType` は `text/plain` を指定する（Google ドキュメントに自動変換される）
-   - `title` にファイル名を設定する
-3. 保存完了後、ユーザーにファイル名とGoogle Drive上のURLを伝える
-4. ユーザーの確認なしに自動保存してよい（デフォルト動作）
+### ファイル名の決定
+`referral_YYYYMMDD_患者ID.txt`（例：referral_20260629_142072.txt）
+- YYYYMMDD は文書作成日（本日の日付）
+- 患者ID は CSV の第1列の値
+
+### 手順1：ローカルに .txt として保存（必須）
+Bash ツールを使ってスクラッチパッドに保存する：
+```
+/tmp/claude-0/-home-user-Taskforces-for-Oizumi/<session-id>/scratchpad/<ファイル名>
+```
+- session-id はセッション固有のディレクトリ名（既存のパスを確認して使用すること）
+- ファイルの内容は文書全文（ステップ2で作成したテキスト）
+
+### 手順2：SendUserFile ツールでチャット画面に添付送信（必須）
+- `files` にローカルファイルのパスを指定する
+- `status` は `"normal"` を指定する
+- `display` は `"attach"` を指定する（ダウンロード用）
+- `caption` に `「ファイル名.txt を保存しました。iPadの Files アプリまたは iCloud Drive に保存できます。」` と記載する
+
+### 手順3：Google Drive への追加保存（MCPが接続中の場合のみ）
+Google Drive MCP ツール（mcp__Google_Drive__create_file）が利用可能な場合は追加で保存する：
+- `textContent` に文書全文を設定する
+- `contentMimeType` は `text/plain` を指定する
+- `title` にファイル名（拡張子なし）を設定する
+- 保存完了後、Google Drive 上の URL をユーザーに伝える
+- MCP が利用不可の場合はこの手順をスキップする（エラーを出さない）
